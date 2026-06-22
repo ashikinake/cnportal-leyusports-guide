@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>乐鱼体育 · 知识库 · 重新发现</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(145deg, #fdefe6 0%, #f9d1b8 70%, #ecb696 100%);
+            font-family: 'Segoe UI', 'Noto Sans TC', system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1.5rem;
+            line-height: 1.6;
+            color: #2a201c;
+        }
+
+        .wrapper {
+            max-width: 1200px;
+            width: 100%;
+            margin: 2rem auto;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* 卡片通用 */
+        .card {
+            background: rgba(255, 245, 238, 0.92);
+            backdrop-filter: blur(2px);
+            border-radius: 36px;
+            padding: 2.5rem 2.2rem;
+            box-shadow: 0 12px 28px rgba(140, 80, 40, 0.12), 0 4px 12px rgba(0,0,0,0.04);
+            border: 1px solid rgba(255, 215, 185, 0.5);
+            transition: box-shadow 0.2s ease, transform 0.15s;
+        }
+
+        .card:hover {
+            box-shadow: 0 20px 36px rgba(130, 70, 30, 0.15);
+            transform: translateY(-2px);
+        }
+
+        /* Hero 区 — 目录感 / 标记入口 */
+        .hero-card {
+            text-align: center;
+            background: rgba(255, 240, 228, 0.88);
+            padding: 3rem 2.5rem 2.8rem;
+        }
+
+        .hero-card h1 {
+            font-size: 2.8rem;
+            font-weight: 450;
+            letter-spacing: 0.02em;
+            color: #4d2b1b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-card h1 span {
+            background: #bc7f5a;
+            color: #fbf0ea;
+            font-size: 1.2rem;
+            font-weight: 400;
+            padding: 0.1rem 1rem;
+            border-radius: 60px;
+            letter-spacing: 1px;
+        }
+
+        .hero-sub {
+            font-size: 1.2rem;
+            margin-top: 1rem;
+            color: #5b3a2a;
+            border-bottom: 1px dashed #d9b69b;
+            padding-bottom: 1.2rem;
+            display: inline-block;
+        }
+
+        .hero-dir {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.8rem 2rem;
+            margin-top: 1.8rem;
+            font-size: 1rem;
+            color: #694b3a;
+        }
+
+        .hero-dir .dir-item {
+            background: #f3ddd1;
+            padding: 0.3rem 1.2rem;
+            border-radius: 50px;
+            font-weight: 350;
+        }
+
+        /* 导航感说明区 — 知识库布局 */
+        .grid-2col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 720px) {
+            .grid-2col {
+                grid-template-columns: 1fr;
+                gap: 1.8rem;
+            }
+
+            .hero-card h1 {
+                font-size: 2.2rem;
+            }
+
+            .card {
+                padding: 2rem 1.5rem;
+            }
+        }
+
+        .section-label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #a77b60;
+            margin-bottom: 0.8rem;
+            border-left: 4px solid #c38663;
+            padding-left: 0.8rem;
+        }
+
+        .card h2 {
+            font-size: 1.7rem;
+            font-weight: 430;
+            color: #3a241b;
+            margin-bottom: 1.2rem;
+            line-height: 1.3;
+        }
+
+        .card p {
+            margin-bottom: 1rem;
+            color: #3f2c22;
+        }
+
+        .card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .card ul li {
+            padding: 0.4rem 0 0.4rem 1.8rem;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="%23c38663"><circle cx="12" cy="12" r="6"/></svg>') left center no-repeat;
+            background-size: 12px;
+            margin-bottom: 0.3rem;
+        }
+
+        .link-btn-like {
+            display: inline-block;
+            background: #e3c2ab;
+            color: #2f1e17;
+            padding: 0.4rem 1.8rem;
+            border-radius: 60px;
+            text-decoration: none;
+            font-weight: 450;
+            border: 1px solid #d6ab91;
+            transition: background 0.2s, transform 0.1s;
+            margin-top: 0.2rem;
+        }
+
+        .link-btn-like:hover {
+            background: #d6ab91;
+            transform: scale(0.98);
+            color: #1f130f;
+        }
+
+        .highlight-link {
+            background: #ebcfbc;
+            padding: 0.15rem 0.5rem;
+            border-radius: 30px;
+            text-decoration: none;
+            color: #3b241b;
+            font-weight: 450;
+            border-bottom: 1px solid #b5896e;
+            transition: background 0.2s;
+        }
+
+        .highlight-link:hover {
+            background: #dbb7a0;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid #edd9cb;
+            padding: 0.9rem 0;
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+
+        .faq-q {
+            font-weight: 500;
+            color: #482f23;
+            display: flex;
+            align-items: baseline;
+            gap: 0.6rem;
+        }
+
+        .faq-q::before {
+            content: "▹";
+            color: #b87c5d;
+        }
+
+        .faq-a {
+            margin: 0.4rem 0 0 1.8rem;
+            color: #4f382b;
+            font-size: 0.95rem;
+        }
+
+        .info-note {
+            background: #f5e5da;
+            border-radius: 40px;
+            padding: 1.2rem 2rem;
+            font-size: 0.95rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem 1.6rem;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .info-note span {
+            background: #dbb39b;
+            padding: 0.1rem 1rem;
+            border-radius: 40px;
+            color: #281c15;
+            font-size: 0.85rem;
+        }
+
+        .footer-mention {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #5f4032;
+            border-top: 1px solid #dfc1af;
+            padding-top: 1.8rem;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+
+    <!-- HERO — 目录感入口 -->
+    <div class="card hero-card">
+        <h1>
+            📚 乐鱼体育
+            <span>知识库</span>
+        </h1>
+        <div class="hero-sub">再次遇见 · 持续关注</div>
+        <div class="hero-dir">
+            <span class="dir-item">🏷️ 收藏索引</span>
+            <span class="dir-item">📌 说明区</span>
+            <span class="dir-item">💡 提示区</span>
+            <span class="dir-item">📎 相关信息</span>
+        </div>
+        <p style="margin-top: 1.8rem; max-width: 700px; margin-left: auto; margin-right: auto; color: #543b2e;">
+            每一次回访都是对熟悉之地的重新打量。这里整理了关于<strong>乐鱼体育</strong>的核心信息脉络，
+            方便你快速定位、回顾与延伸。
+        </p>
+    </div>
+
+    <!-- 两列布局：说明区 + 提示区 -->
+    <div class="grid-2col">
+        <!-- 说明区：从再次访问和收藏切入 -->
+        <div class="card">
+            <div class="section-label">📖 说明区 · 回访与收藏</div>
+            <h2>为什么值得再次打开</h2>
+            <p>
+                如果你曾经使用过<a href="https://www-leyu-com.com" class="highlight-link">乐鱼体育</a>，
+                大概会记得它那种不多加修饰的实用气质。页面没有冗余的跳转干扰，信息层级清晰，
+                在体育内容与互动之间保持了克制的平衡。
+            </p>
+            <p>
+                很多朋友会把链接收藏在浏览器书签栏，或者随手记在备忘录里——我们自己也一样。
+                收藏的动作背后，是“我之后还会需要它”的直觉。而一份有序的知识库入口，
+                能让这种直觉更快落地。
+            </p>
+            <p style="margin-top: 1.5rem;">
+                <span style="background: #edd7c9; padding: 0.2rem 1.2rem; border-radius: 60px; font-size: 0.9rem;">
+                    ⭐ 推荐收藏 · 目录式索引
+                </span>
+            </p>
+            <!-- 一个自然的链接句子：指向乐鱼体育，无诱导词汇 -->
+            <p style="margin-top: 1.8rem;">
+                若想直接进入内容，可随时通过 
+                <a href="https://www-leyu-com.com" class="link-btn-like">乐鱼体育</a> 
+                回到熟悉界面。
+            </p>
+        </div>
+
+        <!-- 提示区：持续关注的细节 -->
+        <div class="card">
+            <div class="section-label">💡 提示区 · 持续关注</div>
+            <h2>保持关注的小习惯</h2>
+            <ul>
+                <li>不定期刷新首页，留意结构微调或新增栏目。</li>
+                <li>可将站点添加到主屏幕（iOS / Android），生成类原生应用图标。</li>
+                <li>若偏好简洁阅读，可直接使用浏览器阅读模式。</li>
+                <li>关注页脚更新日期，了解最新内容动态。</li>
+            </ul>
+            <p style="margin-top: 1.2rem;">
+                这些细节并不复杂，但能让“再次访问”变成一件更自然的事。
+            </p>
+            <div style="margin-top: 1.5rem; background: #f1ddd0; border-radius: 28px; padding: 0.8rem 1.5rem;">
+                <span style="font-weight: 450;">🔔 提示：</span>
+                当你想快速定位信息时，不妨使用站内关键词查找（Ctrl+F）。
+            </div>
+        </div>
+    </div>
+
+    <!-- 相关信息区：围绕知识库入口的 FAQ 摘要 -->
+    <div class="card">
+        <div class="section-label">📎 相关信息 · FAQ 摘要</div>
+        <h2>常见疑惑与说明</h2>
+        <div class="faq-item">
+            <div class="faq-q">这个页面和之前有什么不同？</div>
+            <div class="faq-a">它更像一个知识库入口，梳理了关于<strong>乐鱼体育</strong>的核心层面，
+            包括说明、提示与相关参考，方便回头翻阅。</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q">我该如何使用这里的链接？</div>
+            <div class="faq-a">句子中的 <a href="https://www-leyu-com.com" class="highlight-link">乐鱼体育</a> 
+            是直接可点击的。你也可以通过页面中的按钮式链接前往。</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q">为什么强调“再次访问”与“收藏”？</div>
+            <div class="faq-a">对于经常使用的服务，一个清爽的入口能减少重复查找的摩擦。
+            收藏与回访的背后，是让信息触手可及。</div>
+        </div>
+        <div style="margin-top: 1.8rem; font-size: 0.95rem; color: #563e30;">
+            <span>📌 更多细节可自行探索，保持开放与审慎。</span>
+        </div>
+    </div>
+
+    <!-- 额外的提示区 / 信息条：呼应持续关注 -->
+    <div class="info-note">
+        <span>🔄 持续关注</span>
+        如果你愿意，可以将此页加入书签。下次回来时，它仍会保持相同的结构。
+        <span style="background: transparent; border: 1px solid #c99b83;">∎ 目录布局·v1</span>
+    </div>
+
+    <!-- 页脚：不动声色 -->
+    <div class="footer-mention">
+        一个以知识库方式组织的介绍页 · 内容方向：再次访问、收藏、持续关注
+    </div>
+</div>
+</body>
+</html>
